@@ -7,7 +7,7 @@ namespace Core\View;
 use Core\Symfony\DependencyInjection\ServiceContainer;
 use Core\View\Template\Compiler\NodeCompiler;
 use Core\View\Template\TemplateCompiler;
-use Core\View\Template\Node\{TemplateNode};
+use Core\View\Template\Node\{ComponentNode};
 use Stringable;
 
 // The __constructor sort has to be a set standard
@@ -42,15 +42,18 @@ interface ComponentInterface extends Stringable
     /**
      * Renders the final component HTML.
      *
-     * @return ?string           null on failure
-     * @param  ?TemplateCompiler $compiler
+     * @param ?TemplateCompiler $compiler
+     *
+     * @return ?string null on failure
      */
     public function render( ?TemplateCompiler $compiler = null ) : ?string;
 
     /**
-     * @return TemplateNode
+     * @param NodeCompiler $node
+     *
+     * @return ComponentNode
      */
-    public function node() : TemplateNode;
+    public function node( NodeCompiler $node ) : ComponentNode;
 
     /**
      * Check if this {@see ComponentInterface} has a build step.
@@ -65,6 +68,8 @@ interface ComponentInterface extends Stringable
     public static function componentName() : string;
 
     /**
+     * @internal
+     *
      * @param NodeCompiler $node
      *
      * @return array

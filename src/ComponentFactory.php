@@ -3,8 +3,15 @@
 namespace Core\View;
 
 use Core\View\ComponentFactory\ComponentProperties;
+use Core\View\Exception\ComponentNotFoundException;
+use Core\View\Template\Node\{ComponentNode};
+use Core\View\Template\Compiler\NodeCompiler;
+use Core\View\Template\TemplateCompiler;
+use Northrook\Logger\{Level, Log};
 use Core\Symfony\DependencyInjection\{ServiceContainer, ServiceContainerInterface};
 use Support\Arr;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use const Cache\AUTO;
 
 final class ComponentFactory implements ServiceContainerInterface
 {
@@ -25,19 +32,86 @@ final class ComponentFactory implements ServiceContainerInterface
      *
      * @param array<class-string, array{name: string, class: class-string, render: 'live'|'runtime'|'static', tags: string[], tagged: array<string, ?string[]>} > $components
      * @param array                                                                                                                                               $tags
+     * @param ServiceLocator                                                                                                                                      $componentLocator
      */
     public function __construct(
-        private readonly array $components,
-        private readonly array $tags,
+        private readonly array          $components,
+        private readonly array          $tags,
+        private readonly ServiceLocator $componentLocator,
     ) {
     }
 
-
-    public function build() : ComponentInterface
+    /**
+     * Renders a component at runtime.
+     *
+     * @param class-string|string  $component
+     * @param array<string, mixed> $arguments
+     * @param ?int                 $cache
+     *
+     * @return string
+     */
+    public function renderComponent( string $component, array $arguments = [], ?int $cache = AUTO ) : string
     {
+        $properties = $this->getComponentProperties( $component );
 
+        if ( ! $properties ) {
+            Log::exception( new ComponentNotFoundException( $component ), Level::CRITICAL );
+            return '';
+        }
+
+        $component = clone $this->getComponent( $component );
+        $component->create( $arguments, $properties->tagged );
+
+        if ( $component->hasBuildStep() ) {
+            dump( 'Build step required.' );
+        }
+
+        $html = $component->render( $this->templateCompiler() );
+
+        if ( ! $html ) {
+            Log::exception( new ComponentNotFoundException( $component ), Level::CRITICAL );
+            return '';
+        }
+
+        $this->instantiated[$component->name][] = $component->uniqueId;
+
+        return $html;
     }
 
+    /**
+     * @param ComponentProperties|string $component
+     * @param NodeCompiler               $nodeCompiler
+     *
+     * @return ComponentNode
+     */
+    public function getComponentNode(
+        string|ComponentProperties $component,
+        NodeCompiler               $nodeCompiler,
+    ) : ComponentNode {
+        return $this->getComponent( $component )->node( $nodeCompiler );
+    }
+
+    /**
+     * Begin the Build proccess of a component.
+     *
+     * @param class-string|ComponentProperties|string $component
+     *
+     * @return ComponentInterface
+     */
+    public function getComponent( string|ComponentProperties $component ) : ComponentInterface
+    {
+        $component = $this->getComponentName( (string) $component );
+
+        if ( $this->componentLocator->has( $component ) ) {
+            $component = $this->componentLocator->get( $component );
+
+            \assert( $component instanceof ComponentInterface );
+
+            return $component;
+        }
+
+        throw new ComponentNotFoundException( $component, 'Not found in the Component Container.' );
+    }
 
     /**
      * @return array<class-string, array<int, string>>
@@ -125,5 +199,8 @@ final class ComponentFactory implements ServiceContainerInterface
         return \array_key_exists( $tag, $this->tags );
     }
 
-
+    private function templateCompiler() : ?TemplateCompiler
+    {
+        return $this->serviceLocator( TemplateCompiler::class, true );
+    }
 }
