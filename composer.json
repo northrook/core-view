@@ -1,0 +1,38 @@
+{
+  "name": "northrook/core-view",
+  "description": "Core Template and Component framework.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Martin",
+      "email": "mn@northrook.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Core\\View\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=8.3",
+    "ext-ctype": "*",
+    "ext-mbstring": "*",
+    "northrook/logger": "dev-main",
+    "northrook/clerk": "dev-main",
+    "northrook/support": "dev-main",
+    "northrook/filesystem": "dev-main",
+    "northrook/array-access": "dev-main",
+    "northrook/html-element": "dev-main",
+    "symfony/filesystem": "^7.1"
+  },
+  "require-dev": {
+    "northrook/dev-env": "dev-main",
+    "northrook/framework": "dev-main"
+  },
+  "scripts": {
+    "phpstan": "vendor/bin/phpstan analyse"
+  }
+}
