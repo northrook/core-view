@@ -30,7 +30,7 @@ abstract class Component implements ComponentInterface
 
     public readonly string $name;
 
-    public readonly Tag $tag;
+    public string|Tag $tag;
 
     /**
      * @param TemplateCompiler $compiler
@@ -114,6 +114,7 @@ abstract class Component implements ComponentInterface
             throw new BadFunctionCallException( $message );
         }
         try {
+            $this->tag = (string) $this->tag;
             return $this->html ??= $this->compile( $compiler ?? new TemplateCompiler() );
         }
         catch ( Throwable $exception ) {

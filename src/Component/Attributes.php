@@ -26,6 +26,26 @@ final class Attributes implements Iterator, Stringable
         $this->key = 0;
     }
 
+    public function parseAttributes( bool $useSingleQuote = false ) : void
+    {
+        $quote = $useSingleQuote ? "'" : '"';
+
+        $attributes = [];
+
+        foreach ( $this->getAttributes() as $attribute => $value ) {
+            // Check if the attribute is considered a boolean
+            if ( null === $value || $this->isBooleanAttribute( $attribute ) ) {
+                $attributes[$attribute] = $attribute;
+            }
+
+            // Discard empty values, assign the attribute="value" as string
+            else {
+                $attributes[$attribute] = $value;
+            }
+        }
+        $this->attributes = $attributes;
+    }
+
     /**
      * @param array $attributes
      *
@@ -111,6 +131,7 @@ final class Attributes implements Iterator, Stringable
         }
         return $this;
     }
+
     /**
      * @param string $attribute
      *
@@ -123,6 +144,11 @@ final class Attributes implements Iterator, Stringable
             'class', 'classes' => $this->classAttribute(),
             'style', 'styles' => ( function() {
                 $styles = [];
+
+                if ( \is_string( $this->attributes['style'] ) ) {
+                    dump( $this->attributes );
+                    return '';
+                }
 
                 foreach ( $this->attributes['style'] ?? [] as $style => $val ) {
                     $styles[$style] = "{$style}: {$val};";
@@ -289,7 +315,6 @@ final class Attributes implements Iterator, Stringable
         }
         return $this->attributes['class'];
     }
-
 
     private function isBooleanAttribute( string $attribute ) : bool
     {

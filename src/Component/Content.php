@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Core\View\Component;
 
 use Countable;
+use Latte\Runtime\{Html, HtmlStringable};
 use Stringable;
 use Iterator;
 
 /**
  * @internal
  */
-final class Content implements Iterator, Stringable, Countable
+final class Content implements Iterator, HtmlStringable, Countable
 {
     private int $key;
 
     /** @var string[] */
     private array $content = [];
 
-    public function __construct(
-        string|Stringable ...$content,
-    ) {
+    public function __construct( null|string|Stringable ...$content )
+    {
         $this->append( ...$content );
         $this->key = 0;
     }
@@ -30,6 +30,11 @@ final class Content implements Iterator, Stringable, Countable
         $string        = \implode( PHP_EOL, $this->content );
         $this->content = [];
         return $string;
+    }
+
+    public function current() : HtmlStringable
+    {
+        return new Html( $this->content[$this->key] );
     }
 
     public function count() : int
@@ -59,11 +64,6 @@ final class Content implements Iterator, Stringable, Countable
     public function key() : int
     {
         return $this->key;
-    }
-
-    public function current() : string
-    {
-        return $this->content[$this->key];
     }
 
     public function next() : void
