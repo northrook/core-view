@@ -17,6 +17,7 @@ final readonly class ComponentProperties implements Stringable
      * @param non-empty-lowercase-string       $name
      * @param class-string<ComponentInterface> $class
      * @param bool                             $static
+     * @param int                              $priority
      * @param string[]                         $tags
      * @param array<string, ?string[]>         $tagged
      */
@@ -24,6 +25,7 @@ final readonly class ComponentProperties implements Stringable
         public string $name,
         public string $class,
         public bool   $static,
+        public int    $priority = 0,
         public array  $tags = [],
         public array  $tagged = [],
     ) {
