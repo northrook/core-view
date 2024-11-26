@@ -13,13 +13,4 @@ interface NodeInterface
      * @return ComponentNode
      */
     public function node( NodeCompiler $node ) : ComponentNode;
-
-    /**
-     * @internal
-     *
-     * @param NodeCompiler $node
-     *
-     * @return array
-     */
-    public static function nodeArguments( NodeCompiler $node ) : array;
 }

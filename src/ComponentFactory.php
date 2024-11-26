@@ -50,7 +50,7 @@ final class ComponentFactory implements ServiceContainerInterface
      *
      * @return string
      */
-    public function renderComponent( string $component, array $arguments = [], ?int $cache = AUTO ) : string
+    public function render( string $component, array $arguments = [], ?int $cache = AUTO ) : string
     {
         $properties = $this->getComponentProperties( $component );
 
