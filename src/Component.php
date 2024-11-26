@@ -61,13 +61,18 @@ abstract class Component implements ComponentInterface
         $this->tag = new Tag( $this::TAG ?? $arguments['tag'] ?? null );
         $this->name ??= $this::componentName();
 
-        if ( $content = $arguments['content'] ?? null ) {
-            if ( ! \method_exists( $this, 'setContent' ) ) {
-                $message
-                        = 'The '.$this::class.' must use the '.InnerContent::class.' trait when passed $arguments[content].';
-                throw new InvalidArgumentException( $message );
-            }
-            $this->setContent( ...$content );
+        if ( \method_exists( $this, 'setContent' ) ) {
+            dump( $this::class );
+            $this->setContent( ...$arguments['content'] ?? [] );
+            unset( $arguments['content'] );
+        }
+
+        if ( isset( $arguments['content'] ) && ! empty( $arguments['content'] ) ) {
+            $class        = $this::class;
+            $innerContent = InnerContent::class;
+            throw new InvalidArgumentException( <<<MSG
+                The {$class} must use the {$innerContent} trait when passed \$arguments[content].
+                MSG, );
         }
 
         $this->attributes = new Attributes( $arguments['attributes'] ?? [] );

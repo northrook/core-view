@@ -35,4 +35,16 @@ final readonly class ComponentProperties implements Stringable
     {
         return $this->name;
     }
+
+    public function targetTag( string $tag ) : bool
+    {
+        // Parsed namespaced $tag
+        if ( \str_contains( $tag, ':' ) ) {
+            if ( \str_starts_with( $tag, 'ui:' ) ) {
+                $tag = \substr( $tag, 3 );
+            }
+            $tag = \strstr( $tag, ':', true ) ?: $tag;
+        }
+        return \array_key_exists( $tag, $this->tagged );
+    }
 }

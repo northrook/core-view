@@ -37,14 +37,19 @@ final class Content implements Iterator, Stringable, Countable
         return \count( $this->content );
     }
 
-    public function prepend( string|Stringable ...$content ) : void
+    public function set( null|string|Stringable ...$content ) : void
+    {
+        $this->content = $content;
+    }
+
+    public function prepend( null|string|Stringable ...$content ) : void
     {
         foreach ( $content as $item ) {
             \array_unshift( $this->content, (string) $item );
         }
     }
 
-    public function append( string|Stringable ...$content ) : void
+    public function append( null|string|Stringable ...$content ) : void
     {
         foreach ( $content as $item ) {
             $this->content[] = (string) $item;
