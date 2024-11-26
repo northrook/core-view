@@ -3,7 +3,6 @@
 namespace Core\View;
 
 use Core\View\Component\{Attributes, InnerContent};
-use Core\View\Template\Compiler\NodeCompiler;
 use Core\View\Template\TemplateCompiler;
 use Northrook\HTML\Element\Tag;
 use Northrook\Logger\Log;
@@ -31,7 +30,7 @@ abstract class Component implements ComponentInterface
 
     public readonly string $name;
 
-    public readonly string|Tag $tag;
+    public readonly Tag $tag;
 
     /**
      * @param TemplateCompiler $compiler
@@ -59,7 +58,7 @@ abstract class Component implements ComponentInterface
         $this->promoteTagProperties( $arguments, $promote );
         $this->parseArguments( $arguments );
 
-        $this->tag = $this::TAG ?? $arguments['tag'] ?? 'div';
+        $this->tag = new Tag( $this::TAG ?? $arguments['tag'] ?? null );
         $this->name ??= $this::componentName();
 
         if ( $content = $arguments['content'] ?? null ) {
