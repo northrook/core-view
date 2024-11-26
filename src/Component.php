@@ -152,15 +152,6 @@ abstract class Component implements ComponentInterface
         );
     }
 
-    public static function nodeArguments( NodeCompiler $node ) : array
-    {
-        return [
-            'tag'        => $node->tag,
-            'attributes' => $node->attributes(),
-            'content'    => $node->parseContent(),
-        ];
-    }
-
     final protected function setComponentUniqueId( ?string $hash = null ) : void
     {
         if ( \strlen( $hash ) === 16 && \ctype_alnum( $hash ) ) {

@@ -7,7 +7,6 @@ namespace Core\View;
 use Core\Symfony\DependencyInjection\ServiceContainer;
 use Core\View\Template\Compiler\NodeCompiler;
 use Core\View\Template\TemplateCompiler;
-use Core\View\Template\Node\{ComponentNode};
 use Stringable;
 
 // The __constructor sort has to be a set standard
@@ -49,13 +48,6 @@ interface ComponentInterface extends Stringable
     public function render( ?TemplateCompiler $compiler = null ) : ?string;
 
     /**
-     * @param NodeCompiler $node
-     *
-     * @return ComponentNode
-     */
-    public function node( NodeCompiler $node ) : ComponentNode;
-
-    /**
      * Check if this {@see ComponentInterface} has a build step.
      *
      * - Checks if the {@see self::build()} method exists.
@@ -66,13 +58,4 @@ interface ComponentInterface extends Stringable
     public function hasBuildStep() : bool;
 
     public static function componentName() : string;
-
-    /**
-     * @internal
-     *
-     * @param NodeCompiler $node
-     *
-     * @return array
-     */
-    public static function nodeArguments( NodeCompiler $node ) : array;
 }
