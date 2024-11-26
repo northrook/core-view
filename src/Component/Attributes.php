@@ -26,25 +26,25 @@ final class Attributes implements Iterator, Stringable
         $this->key = 0;
     }
 
-    public function parseAttributes( bool $useSingleQuote = false ) : void
-    {
-        $quote = $useSingleQuote ? "'" : '"';
-
-        $attributes = [];
-
-        foreach ( $this->getAttributes() as $attribute => $value ) {
-            // Check if the attribute is considered a boolean
-            if ( null === $value || $this->isBooleanAttribute( $attribute ) ) {
-                $attributes[$attribute] = $attribute;
-            }
-
-            // Discard empty values, assign the attribute="value" as string
-            else {
-                $attributes[$attribute] = $value;
-            }
-        }
-        $this->attributes = $attributes;
-    }
+    // public function parseAttributes( bool $useSingleQuote = false ) : void
+    // {
+    //     $quote = $useSingleQuote ? "'" : '"';
+    //
+    //     $attributes = [];
+    //
+    //     foreach ( $this->getAttributes() as $attribute => $value ) {
+    //         // Check if the attribute is considered a boolean
+    //         if ( null === $value || $this->isBooleanAttribute( $attribute ) ) {
+    //             $attributes[$attribute] = $attribute;
+    //         }
+    //
+    //         // Discard empty values, assign the attribute="value" as string
+    //         else {
+    //             $attributes[$attribute] = $value;
+    //         }
+    //     }
+    //     $this->attributes = $attributes;
+    // }
 
     /**
      * @param array $attributes

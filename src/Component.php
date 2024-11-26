@@ -23,12 +23,12 @@ abstract class Component implements ComponentInterface
 
     public readonly string $uniqueId;
 
-    public readonly Attributes $attributes;
-
     /** @var string Render cache */
     protected string $html;
 
     public readonly string $name;
+
+    public array|Attributes $attributes;
 
     public string|Tag $tag;
 
@@ -114,7 +114,8 @@ abstract class Component implements ComponentInterface
             throw new BadFunctionCallException( $message );
         }
         try {
-            $this->tag = (string) $this->tag;
+            $this->tag        = (string) $this->tag;
+            $this->attributes = (array) $this->attributes->getAttributes();
             return $this->html ??= $this->compile( $compiler ?? new TemplateCompiler() );
         }
         catch ( Throwable $exception ) {
