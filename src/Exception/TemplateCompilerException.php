@@ -2,4 +2,8 @@
 
 namespace Core\View\Exception;
 
-class TemplateCompilerException extends \RuntimeException {}
+use RuntimeException;
+
+final class TemplateCompilerException extends RuntimeException
+{
+}

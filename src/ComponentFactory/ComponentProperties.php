@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Core\View\ComponentFactory;
 
+use Core\View\ComponentInterface;
 use Stringable;
-use Core\View\Component\ComponentInterface;
 
 /**
  * @internal

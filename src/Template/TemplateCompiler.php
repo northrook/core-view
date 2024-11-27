@@ -2,7 +2,7 @@
 
 namespace Core\View\Template;
 
-use Core\View\Template\Compiler\ViewLoader;
+use Core\View\Template\Extension\PreformatterExtension;
 use LogicException;
 use Latte\{Engine, Loader, Loaders\FileLoader};
 use Northrook\Filesystem\File;
@@ -13,22 +13,26 @@ final class TemplateCompiler implements TemplateCompilerInterface
 {
     private readonly Engine $engine;
 
-    private readonly ViewLoader $loader;
+    private readonly TemplateLocator $templates;
+
+    private readonly array $extensions;
 
     public function __construct(
-        ViewLoader|string|array $viewDirectories = [],
-        protected ?string       $cacheDirectory = null,
-        protected string        $locale = 'en',
-        public bool             $autoRefresh = true,
-        private readonly array  $extensions = [],
-        private readonly array  $variables = [],
+        TemplateLocator|string|array $viewDirectories = [],
+        protected ?string            $cacheDirectory = null,
+        protected string             $locale = 'en',
+        public bool                  $autoRefresh = true,
+        array                        $extensions = [],
+        private readonly array       $variables = [],
     ) {
-        if ( $viewDirectories instanceof ViewLoader ) {
-            $this->loader = $viewDirectories;
+        if ( $viewDirectories instanceof TemplateLocator ) {
+            $this->templates = $viewDirectories;
         }
         else {
-            $this->loader = new ViewLoader( $viewDirectories );
+            $this->templates = new TemplateLocator( $viewDirectories );
         }
+
+        $this->extensions = [new PreformatterExtension()] + $extensions;
     }
 
     #[Override]
@@ -45,7 +49,7 @@ final class TemplateCompiler implements TemplateCompilerInterface
             $engine->setTempDirectory( null );
         }
         $render = $engine->renderToString(
-            $this->loader->get( $view ),
+            $this->templates->get( $view ),
             $this->global( $parameters ),
             $block,
         );

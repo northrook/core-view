@@ -2,13 +2,12 @@
 
 namespace Core\View\Template\Node;
 
-use Latte\Compiler\Nodes\{AreaNode};
+use Latte\Compiler\Nodes\TextNode;
 use Core\View\Template\Compiler\{NodeCompiler, NodeExporter};
 use Latte\Compiler\PrintContext;
-use Generator;
 use const Cache\AUTO;
 
-final class ComponentNode extends AreaNode
+final class ComponentNode extends TextNode
 {
     public readonly string $name;
 
@@ -32,26 +31,26 @@ final class ComponentNode extends AreaNode
             \assert( \is_array( $arguments ) );
         }
 
-        $export          = new NodeExporter();
+        $export = new NodeExporter();
+
         $this->name      = $export->string( $name );
         $this->arguments = $export->arguments( $arguments );
         $this->cache     = $export->cacheConstant( $cache );
+
+        parent::__construct(
+            <<<VIEW
+                echo \$this->global->component->render(
+                    component : {$this->name},
+                    arguments : {$this->arguments},
+                    cache     : {$this->cache},
+                );
+                VIEW,
+        );
     }
 
     public function print( PrintContext $context ) : string
     {
-        return <<<VIEW
-            echo \$this->global->component->render(
-                component : {$this->name},
-                arguments : {$this->arguments},
-                cache     : {$this->cache},
-            );
-            VIEW;
-    }
-
-    public function &getIterator() : Generator
-    {
-        false && yield;
+        return $this->content;
     }
 
     public static function nodeArguments( NodeCompiler $node ) : array

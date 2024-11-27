@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\View\Template\Compiler;
+namespace Core\View\Template;
 
 use Core\View\Exception\TemplateCompilerException;
 use Support\{Num};
@@ -12,7 +12,7 @@ use function Support\path_valid;
 /**
  * @internal
  */
-final class ViewLoader
+final class TemplateLocator
 {
     private static Filesystem $filesystem;
 
@@ -72,7 +72,7 @@ final class ViewLoader
     }
 
     /**
-     * Add one or more directories to the {@see ViewLoader} stack.
+     * Add one or more directories to the {@see TemplateLocator} stack.
      *
      * - Non-numeric array keys will be treated as a namespace.
      * - Please ensure each path is a readable directory.
@@ -89,7 +89,7 @@ final class ViewLoader
     }
 
     /**
-     * Add a directory to the {@see ViewLoader} stack.
+     * Add a directory to the {@see TemplateLocator} stack.
      *
      * - Please ensure each path is a readable directory.
      *
