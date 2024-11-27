@@ -32,7 +32,7 @@ final class TemplateCompiler implements TemplateCompilerInterface
             $this->templates = new TemplateLocator( $viewDirectories );
         }
 
-        $this->extensions = [new PreformatterExtension()] + $extensions;
+        $this->extensions = [new PreformatterExtension(), ...$extensions];
     }
 
     #[Override]

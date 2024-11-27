@@ -34,6 +34,12 @@ final class HtmlContent implements HtmlStringable
         return \implode( '', $this->content );
     }
 
+    public static function toArray( null|Stringable|string|array $content ) : array
+    {
+        $content = new self( $content );
+        return (array) $content->parse();
+    }
+
     public function render() : string
     {
         $string = '';

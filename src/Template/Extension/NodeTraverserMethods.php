@@ -37,15 +37,24 @@ trait NodeTraverserMethods
 
             $firstNode = 0      === $index;
             $lastNode  = $index === $lastIndex;
-
-            $before    = $fragment->children[$index - 2] ?? null;
-            $previous  = $fragment->children[$index - 1] ?? null;
-            $next      = $fragment->children[$index + 1] ?? null;
-            $after     = $fragment->children[$index + 2] ?? null;
+            $edgeNode  = ( $firstNode || $lastNode );
             $linebreak = \str_contains( PHP_EOL, $node->content );
 
-            if ( $node->isWhitespace() && $this->pruneWhitespace( $node, ( $firstNode || $lastNode ) ) ) {
-                unset( $fragment->children[$index] );
+            $before   = $fragment->children[$index - 2] ?? null;
+            $previous = $fragment->children[$index - 1] ?? null;
+            $next     = $fragment->children[$index + 1] ?? null;
+            $after    = $fragment->children[$index + 2] ?? null;
+
+            if ( $node->isWhitespace() ) {
+                if ( $next instanceof TextNode && $next->isWhitespace() ) {
+                    unset( $fragment->children[$index] );
+
+                    continue;
+                }
+
+                if ( $next instanceof ElementNode ) {
+                    $node->content = ' ';
+                }
 
                 continue;
             }
@@ -61,7 +70,6 @@ trait NodeTraverserMethods
                 );
             }
         }
-        // dump( $fragment->children );
     }
 
     /**
@@ -84,6 +92,7 @@ trait NodeTraverserMethods
         mixed    $before = null,
         mixed    $after = null,
     ) : void {
+        // dump( $nodeTag);
         // if ( Tag::isContent( $nodeTag ) ) {
         // }
         $textNode->content = Trim::whitespace( $textNode->content );
@@ -93,13 +102,18 @@ trait NodeTraverserMethods
         }
 
         if ( $nextTag ) {
-            $textNode->content = "{$textNode->content} ";
+            $textNode->content = "{$textNode->content}&nbsp;";
         }
 
-        if ( $previousTag && ! Character::isPunctuation( $textNode->content ) ) {
-            // dump( "[{$previousTag}]{$textNode->content}" );
-            $textNode->content = " {$textNode->content}";
+        if ( $previousTag && ! Character::isPunctuation( $textNode->content[0] ) ) {
+            $textNode->content = "&nbsp;{$textNode->content}";
         }
+
+        // if ( $before ) {
+        //     dump( [ $textNode->content, $before ] );
+        // }
+
+        // dump( "[{$previousTag}]{$textNode->content}" );
 
         // dump( "[{$nodeTag}]" );
 
