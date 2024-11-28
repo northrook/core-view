@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Core\View\Render;
 
-use Latte\Runtime\HtmlStringable;
+use Core\View\Interface\IconInterface;
 
-final class Icon extends View implements HtmlStringable
+final class Icon extends View implements IconInterface
 {
-
 }
