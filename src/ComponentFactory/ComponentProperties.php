@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Core\View\ComponentFactory;
 
-use Core\View\ComponentInterface;
+use Core\View\Component\ComponentInterface;
 use Stringable;
 
 /**
@@ -44,7 +44,9 @@ final readonly class ComponentProperties implements Stringable
                 $tag = \substr( $tag, 3 );
             }
             $tag = \strstr( $tag, ':', true ) ?: $tag;
+
+            $tag .= ':';
         }
-        return \array_key_exists( $tag, $this->tagged );
+        return \array_key_exists( $tag, $this->tags );
     }
 }

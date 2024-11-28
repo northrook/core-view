@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\View;
+namespace Core\View\Component;
 
 use Core\Symfony\DependencyInjection\ServiceContainer;
 use Core\View\Template\Compiler\NodeCompiler;

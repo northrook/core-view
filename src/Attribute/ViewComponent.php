@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Core\View\Attribute;
 
 use Attribute;
+use Core\View\Component\ComponentInterface;
 use Northrook\HTML\Element\Tag;
 use Northrook\Logger\Log;
 
@@ -50,6 +51,8 @@ final readonly class ViewComponent
 
     private function setTags( array $tags ) : void
     {
+        // TODO : Will only match stand-alone tags if strictly specified
+
         foreach ( $tags as $tag ) {
             $tag = \strtolower( \trim( $tag ) );
 

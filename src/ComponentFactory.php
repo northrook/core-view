@@ -2,11 +2,12 @@
 
 namespace Core\View;
 
+use Core\View\Component\{ComponentInterface, NodeInterface};
 use Core\View\ComponentFactory\ComponentProperties;
 use Core\View\Exception\ComponentNotFoundException;
 use Core\View\Template\Node\{ComponentNode};
 use Core\View\Template\Compiler\NodeCompiler;
-use Core\View\Template\TemplateCompiler;
+use Core\View\Template\{NodeParser, TemplateCompiler};
 use Northrook\Logger\{Level, Log};
 use Core\Symfony\DependencyInjection\{ServiceContainer, ServiceContainerInterface};
 use Support\Arr;
@@ -86,9 +87,14 @@ final class ComponentFactory implements ServiceContainerInterface
      */
     public function getComponentNode(
         string|ComponentProperties $component,
-        NodeCompiler               $nodeCompiler,
+        NodeParser                 $nodeCompiler,
     ) : ComponentNode {
-        return $this->getComponent( $component )->node( $nodeCompiler );
+        $component = $this->getComponent( $component );
+
+        if ( ! $component instanceof NodeInterface ) {
+            throw new ComponentNotFoundException( $component, 'The component "'.$component->name.'" does implement the NodeInterface');
+        }
+        return $component->node( $nodeCompiler );
     }
 
     /**
@@ -101,6 +107,8 @@ final class ComponentFactory implements ServiceContainerInterface
     public function getComponent( string|ComponentProperties $component ) : ComponentInterface
     {
         $component = $this->getComponentName( (string) $component );
+
+        dump( $component );
 
         if ( $this->componentLocator->has( $component ) ) {
             $component = $this->componentLocator->get( $component );
@@ -153,6 +161,7 @@ final class ComponentFactory implements ServiceContainerInterface
      */
     public function getComponentName( string $from ) : ?string
     {
+        dump( __METHOD__." {$from}" );
         // If the provided $value matches an array name, return it
         if ( \array_key_exists( $from, $this->components ) ) {
             return $from;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Core\View\Component;
 
-use Core\View\ComponentInterface;
+use Core\View\Component\ComponentInterface;
 
 /**
  * @phpstan-require-implements ComponentInterface

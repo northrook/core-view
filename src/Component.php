@@ -2,7 +2,7 @@
 
 namespace Core\View;
 
-use Core\View\Component\{Attributes, InnerContent, TagInterface};
+use Core\View\Component\{Attributes, ComponentInterface, InnerContent, TagInterface};
 use Core\View\Template\TemplateCompiler;
 use Exception\NotImplementedException;
 use Northrook\HTML\Element\Tag;
