@@ -76,7 +76,8 @@ final class NodeExporter
     private function handleArgument( mixed $argument ) : string
     {
         if ( \is_string( $argument ) || $argument instanceof Stringable ) {
-            return (string) "'{$argument}'";
+            $argument = (string) $argument;
+            return "'{$argument}'";
         }
 
         if ( \is_array( $argument ) && \array_filter( $argument, 'is_string' ) ) {
@@ -88,7 +89,7 @@ final class NodeExporter
                 $string .= "'{$key}' => '{$value}', ";
             }
 
-            return $string .= ']';
+            return $string.']';
         }
 
         return __FUNCTION__;
@@ -151,7 +152,7 @@ final class NodeExporter
             $string .= "{$key} => {$value},".PHP_EOL;
         }
 
-        return $string .= ']';
+        return $string.']';
     }
 
     public static function boolean( bool $bool ) : string

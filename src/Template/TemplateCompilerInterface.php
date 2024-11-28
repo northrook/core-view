@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\View\Template;
+declare(strict_types=1);
 
-use Latte\Runtime\Template;
+namespace Core\View\Template;
 
 interface TemplateCompilerInterface
 {

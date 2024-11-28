@@ -38,15 +38,21 @@ final readonly class ComponentProperties implements Stringable
 
     public function targetTag( string $tag ) : bool
     {
+        return \array_key_exists( $this::tag( $tag ), $this->tags );
+    }
+
+    public static function tag( string $tag ) : string
+    {
         // Parsed namespaced $tag
         if ( \str_contains( $tag, ':' ) ) {
-            if ( \str_starts_with( $tag, 'ui:' ) ) {
-                $tag = \substr( $tag, 3 );
+            // Always parse tags passed using a view:tag.. namespace
+            if ( \str_starts_with( $tag, 'view:' ) ) {
+                return \explode( ':', $tag )[1];
             }
-            $tag = \strstr( $tag, ':', true ) ?: $tag;
 
-            $tag .= ':';
+            $tag = \strstr( $tag, ':', true ).':';
         }
-        return \array_key_exists( $tag, $this->tags );
+
+        return $tag;
     }
 }

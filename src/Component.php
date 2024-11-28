@@ -11,7 +11,6 @@ use Throwable;
 use function Cache\memoize;
 use function Support\classBasename;
 use InvalidArgumentException;
-use const Cache\EPHEMERAL;
 use BadFunctionCallException;
 
 abstract class Component implements ComponentInterface
@@ -147,23 +146,22 @@ abstract class Component implements ComponentInterface
                 $name = \strtolower( classBasename( $name ) );
 
                 if ( ! $name || ! \preg_match( '/^[a-z0-9:]+$/', $name ) ) {
-                    $message = 'The name must be lower-case alphanumeric.';
+                    $message = static::class." name '{$name}' must be lower-case alphanumeric.";
 
                     if ( \is_numeric( $name[0] ) ) {
-                        $message = 'The name cannot start with a number.';
+                        $message = static::class." name '{$name}' cannot start with a number.";
                     }
 
                     if ( \str_starts_with( $name, ':' ) || \str_ends_with( $name, ':' ) ) {
-                        $message = 'The name must not start or end with a separator.';
+                        $message = static::class." name '{$name}' must not start or end with a separator.";
                     }
 
-                    throw new InvalidArgumentException( $name );
+                    throw new InvalidArgumentException( $message );
                 }
 
                 return $name;
             },
             $name,
-            EPHEMERAL,
         );
     }
 

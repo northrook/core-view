@@ -2,8 +2,7 @@
 
 namespace Core\View\Template\Node;
 
-use Core\View\Template\NodeExporter;
-use Core\View\Template\NodeParser;
+use Core\View\Template\{NodeExporter, NodeParser};
 use Latte\Compiler\Nodes\TextNode;
 use Latte\Compiler\PrintContext;
 use const Cache\AUTO;
@@ -14,7 +13,7 @@ final class ComponentNode extends TextNode
 
     public readonly string $arguments;
 
-    public readonly ?int $cache;
+    public readonly string $cache;
 
     /**
      * @param string $name

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Core\View\Component;
 
 use Core\Symfony\DependencyInjection\ServiceContainer;
-use Core\View\Template\Compiler\NodeCompiler;
 use Core\View\Template\TemplateCompiler;
 use Stringable;
 

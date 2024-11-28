@@ -7,7 +7,7 @@ namespace Core\View\Template\Extension;
 use Latte\Compiler\{Node, Nodes\FragmentNode, Nodes\TextNode, NodeTraverser};
 use Latte\Compiler\Nodes\Html\ElementNode;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
-use HTML\{Character, Tag, Trim};
+use HTML\{Character, Trim};
 
 trait NodeTraverserMethods
 {
@@ -141,7 +141,7 @@ trait NodeTraverserMethods
             $textNode->content .= \PHP_EOL;
         }
 
-        return (bool) ( $edgeNode || ! $textNode->content );
+        return $edgeNode || ! $textNode->content ;
     }
 
     /**

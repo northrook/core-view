@@ -109,7 +109,7 @@ final class TemplateLocator
         // TODO : Handle priority collision
         $priority ??= \count( $this->viewDirectories );
 
-        $priority = Num::pad( $priority++, 0 );
+        $priority = Num::pad( $priority + 1, 0 );
 
         // Avoid duplicates, setting the latest $priority
         if ( $isset = \array_search( $path, $this->viewDirectories ) ) {

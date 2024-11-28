@@ -23,7 +23,7 @@ final readonly class ComponentParser
     /** @var non-empty-lowercase-string */
     public string $name;
 
-    /** @var class-string<\Core\View\Component\ComponentInterface> */
+    /** @var class-string<ComponentInterface> */
     public string $class;
 
     /** @var array<int, string> */

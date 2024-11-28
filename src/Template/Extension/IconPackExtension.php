@@ -6,8 +6,9 @@ namespace Core\View\Template\Extension;
 
 use Closure;
 use Core\View\Interface\{IconInterface, IconPackInterface, IconServiceInterface};
+use Latte\Extension;
 
-final class IconPackExtension extends \Latte\Extension
+final class IconPackExtension extends Extension
 {
     /**
      * @param Closure(): IconServiceInterface $lazyIconService

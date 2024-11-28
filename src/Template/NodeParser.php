@@ -39,9 +39,7 @@ final class NodeParser
 
         $level = 0;
 
-        $arguments = $this->parseContent( $from, $level );
-
-        return $arguments;
+        return $this->parseContent( $from, $level );
     }
 
     /**
@@ -74,10 +72,9 @@ final class NodeParser
             if ( $node instanceof ElementNode ) {
                 $content["{$node->name}:{$index}"] = [
                     'attributes' => $this->attributes( $node ),
-                    'content'    => $this->getContent( $node, $level ),
+                    'content'    => $this->parseContent( $node, $level ),
                 ];
-
-                continue;
+                // continue;
             }
             //
             // $content[ $index ] = NodeHelpers::toText( $node );
