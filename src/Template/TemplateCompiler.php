@@ -42,6 +42,7 @@ final class TemplateCompiler implements TemplateCompilerInterface
         ?string      $block = null, // TODO : See what this actually does
         ?Loader      $loader = null,
         bool         $cache = true,
+        bool         $components = true,
     ) : string {
         $engine = $this->engine( $loader );
 
@@ -56,6 +57,10 @@ final class TemplateCompiler implements TemplateCompilerInterface
 
         if ( ! $cache ) {
             $engine->setTempDirectory( $this->cacheDirectory );
+        }
+
+        if ( ! $components ) {
+            // TODO : Prevent this render from parsing components
         }
 
         return $render;

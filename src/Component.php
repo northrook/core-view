@@ -57,15 +57,15 @@ abstract class Component implements ComponentInterface
         $this->promoteTagProperties( $arguments, $promote );
         $this->parseArguments( $arguments );
 
-        if ( isset( $arguments['tag'] ) ) {
+        if ( $this::TAG ) {
             if ( ! $this instanceof TagInterface ) {
-                $message = 'The '.$this::class.' must implement the TagInterface when using $arguments[content].';
+                $message = 'The '.$this::class.' must implement the TagInterface when using a tag.';
                 throw new NotImplementedException( $message, TagInterface::class );
             }
 
             \assert( \property_exists( $this, 'tag' ) );
 
-            $this->tag = (string) new Tag( $arguments['tag'] );
+            $this->tag = (string) new Tag( $arguments['tag'] ?? $this::TAG );
         }
 
         $this->name ??= $this::componentName();
