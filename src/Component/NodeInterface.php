@@ -8,6 +8,7 @@ use Core\View\Template\Node\ComponentNode;
 use Core\View\Template\NodeParser;
 
 /**
+ * @phpstan-require-implements \Core\View\ComponentInterface
  * @used-by ComponentNode trait
  */
 interface NodeInterface

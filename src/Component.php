@@ -2,8 +2,9 @@
 
 namespace Core\View;
 
-use Core\View\Component\{Attributes, InnerContent};
+use Core\View\Component\{Attributes, InnerContent, TagInterface};
 use Core\View\Template\TemplateCompiler;
+use Exception\NotImplementedException;
 use Northrook\HTML\Element\Tag;
 use Northrook\Logger\Log;
 use Throwable;
@@ -29,8 +30,6 @@ abstract class Component implements ComponentInterface
     public readonly string $name;
 
     public array|Attributes $attributes;
-
-    public string|Tag $tag;
 
     /**
      * @param TemplateCompiler $compiler
@@ -58,7 +57,17 @@ abstract class Component implements ComponentInterface
         $this->promoteTagProperties( $arguments, $promote );
         $this->parseArguments( $arguments );
 
-        $this->tag = new Tag( $this::TAG ?? $arguments['tag'] ?? null );
+        if ( isset( $arguments['tag'] ) ) {
+            if ( ! $this instanceof TagInterface ) {
+                $message = 'The '.$this::class.' must implement the TagInterface when using $arguments[content].';
+                throw new NotImplementedException( $message, TagInterface::class );
+            }
+
+            \assert( \property_exists( $this, 'tag' ) );
+
+            $this->tag = (string) new Tag( $arguments['tag'] );
+        }
+
         $this->name ??= $this::componentName();
 
         if ( \method_exists( $this, 'setContent' ) ) {
@@ -67,7 +76,8 @@ abstract class Component implements ComponentInterface
             unset( $arguments['content'] );
         }
 
-        if ( isset( $arguments['content'] ) && ! empty( $arguments['content'] ) ) {
+        if ( ! empty( $arguments['content'] ) ) {
+            // if ( isset( $arguments['content'] ) && ! empty( $arguments['content'] ) ) {
             $class        = $this::class;
             $innerContent = InnerContent::class;
             throw new InvalidArgumentException( <<<MSG
@@ -114,7 +124,6 @@ abstract class Component implements ComponentInterface
             throw new BadFunctionCallException( $message );
         }
         try {
-            $this->tag        = (string) $this->tag;
             $this->attributes = (array) $this->attributes->getAttributes();
             return $this->html ??= $this->compile( $compiler ?? new TemplateCompiler() );
         }
