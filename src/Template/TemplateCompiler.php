@@ -84,6 +84,8 @@ final class TemplateCompiler implements TemplateCompilerInterface
 
         // Add all registered extensions to the Engine.
         \array_map( [$engine, 'addExtension'], $this->extensions );
+        // TODO : Ensure that $this->extensions has a IconPackExtension::class,
+        //        else instantiate using the fallback IconPack.
 
         $engine
             ->setTempDirectory( $this->cacheDirectory )
