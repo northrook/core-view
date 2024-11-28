@@ -28,7 +28,6 @@ final class PreformatterExtension extends Latte\Extension
 
     public function nodePreformatter( TemplateNode $template ) : void
     {
-        dump( $template );
         $this->trimFragmentWhitespace( $template->main );
 
         ( new NodeTraverser() )->traverse(
