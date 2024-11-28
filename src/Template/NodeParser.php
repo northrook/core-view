@@ -2,7 +2,7 @@
 
 namespace Core\View\Template;
 
-// : NodeExporter 2.0
+// : NodeCompiler 2.0
 
 use Core\View\Template\Compiler\NodeCompiler\PrintedNode;
 use InvalidArgumentException;

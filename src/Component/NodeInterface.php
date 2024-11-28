@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\View\Component;
 
-use Core\View\Template\Compiler\NodeCompiler;
 use Core\View\Template\Node\ComponentNode;
+use Core\View\Template\NodeParser;
 
+/**
+ * @used-by ComponentNode trait
+ */
 interface NodeInterface
 {
     /**
-     * @param NodeCompiler $node
+     * @param NodeParser $node
      *
      * @return ComponentNode
      */
-    public function node( NodeCompiler $node ) : ComponentNode;
+    public function node( NodeParser $node ) : ComponentNode;
 }

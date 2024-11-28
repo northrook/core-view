@@ -50,7 +50,7 @@ final readonly class ViewComponent
 
     private function setTags( array $tags ) : void
     {
-        foreach ( $tags as $i => $tag ) {
+        foreach ( $tags as $tag ) {
             $tag = \strtolower( \trim( $tag ) );
 
             if ( ! \in_array( \strstr( $tag, ':', true ), Tag::TAGS, true ) ) {

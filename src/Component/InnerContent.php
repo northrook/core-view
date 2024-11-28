@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\View\Component;
 
 use Stringable;
 
+/**
+ * @phpstan-require-implements ContentInterface
+ */
 trait InnerContent
 {
     public readonly Content $content;

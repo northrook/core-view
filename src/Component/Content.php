@@ -11,6 +11,7 @@ use Iterator;
 
 /**
  * @internal
+ * @used-by InnerContent
  */
 final class Content implements Iterator, HtmlStringable, Countable
 {

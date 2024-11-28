@@ -2,8 +2,9 @@
 
 namespace Core\View\Template\Node;
 
+use Core\View\Template\NodeExporter;
+use Core\View\Template\NodeParser;
 use Latte\Compiler\Nodes\TextNode;
-use Core\View\Template\Compiler\{NodeCompiler, NodeExporter};
 use Latte\Compiler\PrintContext;
 use const Cache\AUTO;
 
@@ -18,15 +19,15 @@ final class ComponentNode extends TextNode
     /**
      * @param string $name
      *
-     * @param array{tag: string, attributes: array<string, ?string>, content: array<array-key, string>}|NodeCompiler $arguments
-     * @param ?int                                                                                                   $cache     [AUTO]
+     * @param array{tag: string, attributes: array<string, ?string>, content: array<array-key, string>}|NodeParser $arguments
+     * @param ?int                                                                                                 $cache     [AUTO]
      */
     public function __construct(
-        string             $name,
-        array|NodeCompiler $arguments = [],
-        ?int               $cache = AUTO,
+        string           $name,
+        array|NodeParser $arguments = [],
+        ?int             $cache = AUTO,
     ) {
-        if ( $arguments instanceof NodeCompiler ) {
+        if ( $arguments instanceof NodeParser ) {
             $arguments = ComponentNode::nodeArguments( $arguments );
             \assert( \is_array( $arguments ) );
         }
@@ -53,12 +54,12 @@ final class ComponentNode extends TextNode
         return $this->content;
     }
 
-    public static function nodeArguments( NodeCompiler $node ) : array
+    public static function nodeArguments( NodeParser $node ) : array
     {
         return [
             'tag'        => $node->tag,
             'attributes' => $node->attributes(),
-            'content'    => $node->parseContent(),
+            'content'    => $node->getContent(),
         ];
     }
 }
