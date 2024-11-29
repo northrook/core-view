@@ -54,9 +54,6 @@ final class PreformatterExtension extends Latte\Extension
         if ( $node->content instanceof Latte\Compiler\Nodes\FragmentNode ) {
             $this->trimFragmentWhitespace( $node->content, $node->name );
         }
-        // else {
-        //     dump( $node );
-        // }
 
         return $node;
     }

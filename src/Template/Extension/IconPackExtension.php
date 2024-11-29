@@ -13,9 +13,8 @@ final class IconPackExtension extends Extension
     /**
      * @param Closure(): IconServiceInterface $lazyIconService
      */
-    public function __construct(
-        private readonly Closure $lazyIconService,
-    ) {
+    public function __construct( private readonly Closure $lazyIconService )
+    {
     }
 
     public function getFunctions() : array

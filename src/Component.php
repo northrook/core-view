@@ -127,8 +127,8 @@ abstract class Component implements ComponentInterface
             return $this->html ??= $this->compile( $compiler ?? new TemplateCompiler() );
         }
         catch ( Throwable $exception ) {
-            dump( $exception );
             Log::exception( $exception );
+            dump( $exception );
             return null;
         }
     }
