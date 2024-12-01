@@ -8,7 +8,7 @@ use Core\Symfony\Console\Output;
 use Core\View\Attribute\ViewComponent;
 use Core\View\Component\ComponentInterface;
 use Exception\NotImplementedException;
-use Support\{ClassInfo, Reflect};
+use Support\{ClassInfo, FileInfo, Reflect};
 
 /**
  * @internal
@@ -46,12 +46,13 @@ final readonly class ComponentParser
         $this->tags = $this->componentNodeTags();
 
         $this->properties = (array) new ComponentProperties(
-            $this->name,
-            $this->class,
-            $this->componentNode->static,
-            $this->priority = $this->componentNode->priority,
-            $this->tags,
-            $this->taggedProperties(),
+                $this->name,
+                $this->class,
+                $this->componentNode->static,
+                $this->priority = $this->componentNode->priority,
+                $this->tags,
+                $this->taggedProperties(),
+                $this->componentAssets(),
         );
     }
 
@@ -149,5 +150,20 @@ final readonly class ComponentParser
         $this->componentNode
                 = Reflect::getAttribute( $this->component->reflect(), ViewComponent::class )
                   ?? new ViewComponent();
+    }
+
+    private function componentAssets() : array
+    {
+        $directory = \dirname( $this->component->path->string );
+        $assets    = [];
+
+        foreach ( \glob( $directory.'/*.{css,js}', GLOB_BRACE ) as $file ) {
+            $file = new FileInfo( $file );
+            if ( \str_starts_with( $file->getFilename(), $this->name ) ) {
+                $assets[] = $file->getRealPath();
+            }
+        }
+
+        return $assets;
     }
 }

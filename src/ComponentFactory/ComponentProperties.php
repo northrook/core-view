@@ -20,14 +20,16 @@ final readonly class ComponentProperties implements Stringable
      * @param int                              $priority
      * @param string[]                         $tags
      * @param array<string, ?string[]>         $tagged
+     * @param array                            $assets
      */
     public function __construct(
-        public string $name,
-        public string $class,
-        public bool   $static,
-        public int    $priority = 0,
-        public array  $tags = [],
-        public array  $tagged = [],
+            public string $name,
+            public string $class,
+            public bool   $static,
+            public int    $priority = 0,
+            public array  $tags = [],
+            public array  $tagged = [],
+            public array  $assets = [],
     ) {
     }
 
