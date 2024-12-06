@@ -99,7 +99,7 @@ abstract class Component implements ComponentInterface
                 continue;
             }
 
-            if ( \method_exists( $this, $value ) ) {
+            if ( \is_string( $value ) && \method_exists( $this, $value ) ) {
                 $this->{$value}();
             }
 
@@ -113,7 +113,7 @@ abstract class Component implements ComponentInterface
 
     final public function __toString()
     {
-        return $this->render();
+        return $this->render() ?? '';
     }
 
     final public function render( ?TemplateCompiler $compiler = null ) : ?string
@@ -182,6 +182,10 @@ abstract class Component implements ComponentInterface
      */
     private function promoteTagProperties( array &$arguments, array $promote = [] ) : void
     {
+        if ( ! isset( $arguments['tag'] ) ) {
+            return;
+        }
+
         $exploded         = \explode( ':', $arguments['tag'] );
         $arguments['tag'] = $exploded[0];
 
