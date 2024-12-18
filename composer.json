@@ -24,10 +24,9 @@
     "northrook/logger": "dev-main",
     "northrook/clerk": "dev-main",
     "northrook/support": "dev-main",
-    "northrook/filesystem": "dev-main",
     "northrook/array-access": "dev-main",
     "northrook/html-element": "dev-main",
-    "symfony/filesystem": "^7.1"
+    "symfony/filesystem": "@stable"
   },
   "require-dev": {
     "northrook/dev-env": "dev-main",

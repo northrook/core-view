@@ -4,7 +4,6 @@ namespace Core\View\Template;
 
 // : NodeCompiler 2.0
 
-use Core\View\Template\Compiler\NodeCompiler\PrintedNode;
 use InvalidArgumentException;
 use Latte\Compiler\{Node, NodeHelpers, Nodes\Html\AttributeNode, PrintContext};
 use Latte\Compiler\Nodes\Html\ElementNode;

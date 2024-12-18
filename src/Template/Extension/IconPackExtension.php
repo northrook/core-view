@@ -25,7 +25,7 @@ final class IconPackExtension extends Extension
         ];
     }
 
-    public function getIcon( string $name, array $attributes = [] ) : ?IconInterface
+    public function getIcon( string $name, string|array ...$attributes ) : ?IconInterface
     {
         return $this->getIconService()->getIcon( $name, $attributes );
     }

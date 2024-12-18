@@ -45,8 +45,6 @@ final class Render implements Singleton
         bool              $cache = false,
         ?TemplateCompiler $compiler = null,
     ) : string {
-        // Parse template ?: html
-
         return $view;
     }
 
