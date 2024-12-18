@@ -46,13 +46,13 @@ final readonly class ComponentParser
         $this->tags = $this->componentNodeTags();
 
         $this->properties = (array) new ComponentProperties(
-                $this->name,
-                $this->class,
-                $this->componentNode->static,
-                $this->priority = $this->componentNode->priority,
-                $this->tags,
-                $this->taggedProperties(),
-                $this->componentAssets(),
+            $this->name,
+            $this->class,
+            $this->componentNode->static,
+            $this->priority = $this->componentNode->priority,
+            $this->tags,
+            $this->taggedProperties(),
+            $this->componentAssets(),
         );
     }
 
@@ -154,7 +154,7 @@ final readonly class ComponentParser
 
     private function componentAssets() : array
     {
-        $directory = \dirname( $this->component->path->string );
+        $directory = \dirname( $this->component->fileInfo->getPathname() );
         $assets    = [];
 
         foreach ( \glob( $directory.'/*.{css,js}', GLOB_BRACE ) as $file ) {

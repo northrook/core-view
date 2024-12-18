@@ -5,9 +5,9 @@ namespace Core\View\Template;
 use Core\View\Template\Extension\PreformatterExtension;
 use LogicException;
 use Latte\{Engine, Loader, Loaders\FileLoader};
-use Northrook\Filesystem\File;
 use Northrook\Logger\Log;
 use Override;
+use Support\Filesystem;
 
 final class TemplateCompiler implements TemplateCompilerInterface
 {
@@ -129,7 +129,7 @@ final class TemplateCompiler implements TemplateCompilerInterface
 
     public function clearTemplateCache() : bool
     {
-        return File::remove( $this->cacheDirectory );
+        return Filesystem::remove( $this->cacheDirectory );
     }
 
     public function pruneTemplateCache() : array
